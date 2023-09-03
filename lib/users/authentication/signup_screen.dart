@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mysql_app/components/custom_button.dart';
 import 'package:mysql_app/components/custom_textfield.dart';
 import 'package:mysql_app/models/user.dart';
@@ -119,7 +120,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           const Text("Already have account?"),
                           GestureDetector(
                               onTap: () {
-                                Navigator.pushReplacementNamed(context, LoginScreen.id);
+                                GoRouter.of(context).pushReplacementNamed(LoginScreen.id);
                               },
                               child: const Text(
                                 "Sign in",

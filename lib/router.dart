@@ -17,15 +17,15 @@ GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 class AppRouter {
   static GoRouter router = GoRouter(
     initialLocation: SplashScreen.id,
-    redirect: (context, state) {
-      if (state.uri.path!="/" && state.uri.path!="/splashScreen" ) {
-        print("redirect activated...");
-        print(state.uri.path);
-        print(state.uri.queryParameters);
-        print("redirect activated...end");
-return PayScreen.id;
-      }
-    },
+ //   redirect: (context, state) {
+ //     if (state.uri.path!="/" && state.uri.path!="/splashScreen" ) {
+ //       print("redirect activated...");
+ //       print(state.uri.path);
+ //       print(state.uri.queryParameters);
+//        print("redirect activated...end");
+//return PayScreen.id;
+//      }
+ //   },
     routes: [
       GoRoute(
           name: "/",

@@ -13,7 +13,6 @@ import 'package:mysql_app/providers/user_provider.dart';
 import 'package:mysql_app/users/authentication/login_screen.dart';
 import 'package:mysql_app/users/fragments/dashboard.dart';
 import 'package:provider/provider.dart';
-import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zarinpal/zarinpal.dart';
 
@@ -41,52 +40,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ..setCallbackURL("https://mlggrand2.ir/#/payScreen?user_id=$id");
 
     ZarinPal().startPayment(paymentRequest, (status, paymentGatewayUri) {
-      print("work till here$status");
-      if (status == 100) {
-        launchUrl(Uri.parse(paymentGatewayUri!),
-            mode: LaunchMode.externalApplication);
-      } else {
-        Fluttertoast.showToast(
-          msg: "error $status on the payment ",
-        );
-      }
-    });
-  }
-
-  subscriptionPayment(context,User? user,PaymentRequest paymentRequest,PaymentServices paymentServices) async {
-    String deviceId=await getDeviceInfo();
-    StreamSubscription subscription = linkStream.listen((link) {
-      if (link != null) {
-        if (link.toLowerCase().contains('status')) {
-          String status = link.split("=").last.toString();
-          String authority =
-              link.split("&")[0].split("?")[1].split("=")[1].toString();
-
-          ZarinPal().verificationPayment(status, authority, paymentRequest,
-              (isPaymentSuccess, refID, paymentRequest) {
-            if (isPaymentSuccess) {
-              Subscription subscription = Subscription(
-                id: user!.id!.toInt(),
-                user: user,
-                level: 1,
-                startDate: DateTime.now(),
-                description: paymentRequest.description ?? "",
-                payAmount: paymentRequest.amount!.toDouble(),
-                refId: refID!,
-                phoneNumber: user.phoneNumber!,
-                email: user.email,
-                deviceId:deviceId,
-              );
-              Provider.of<UserProvider>(context,listen: false).setSubscription(subscription);
-              paymentServices.saveSubscription(subscription);
-              Provider.of<UserProvider>(context, listen: false).levelUpUser();
-              setState(() {});
-            }
-          });
+      try {
+        if (status == 100) {
+          launchUrl(Uri.parse(paymentGatewayUri!),
+              mode: LaunchMode.externalApplication);
+        } else {
+          Fluttertoast.showToast(
+            msg: "error $status on the payment ",
+          );
         }
+      }catch(e){
+        print("pay option error..");
+        print(e);
       }
     });
   }
+
+  // subscriptionPayment(context,User? user,PaymentRequest paymentRequest,PaymentServices paymentServices) async {
+  //   String deviceId=await getDeviceInfo();
+  //   StreamSubscription subscription = linkStream.listen((link) {
+  //     if (link != null) {
+  //       if (link.toLowerCase().contains('status')) {
+  //         String status = link.split("=").last.toString();
+  //         String authority =
+  //             link.split("&")[0].split("?")[1].split("=")[1].toString();
+  //
+  //         ZarinPal().verificationPayment(status, authority, paymentRequest,
+  //             (isPaymentSuccess, refID, paymentRequest) {
+  //           if (isPaymentSuccess) {
+  //             Subscription subscription = Subscription(
+  //               id: user!.id!.toInt(),
+  //               user: user,
+  //               level: 1,
+  //               startDate: DateTime.now(),
+  //               description: paymentRequest.description ?? "",
+  //               payAmount: paymentRequest.amount!.toDouble(),
+  //               refId: refID!,
+  //               phoneNumber: user.phoneNumber!,
+  //               email: user.email,
+  //               deviceId:deviceId,
+  //             );
+  //             Provider.of<UserProvider>(context,listen: false).setSubscription(subscription);
+  //             paymentServices.saveSubscription(subscription);
+  //             Provider.of<UserProvider>(context, listen: false).levelUpUser();
+  //             setState(() {});
+  //           }
+  //         });
+  //       }
+  //     }
+  //   });
+  // }
 testDeepLink() {
 }
   @override
@@ -146,6 +149,7 @@ testDeepLink() {
                   ),
                   onPressed: () {
                     GoRouter.of(context).pushNamed(LoginScreen.id);
+
                   },
                   child: const Text("Login")),
                 ),
@@ -209,7 +213,7 @@ testDeepLink() {
                         onPressed: () {
                           Provider.of<UserProvider>(context, listen: false)
                               .removeUser();
-                          GoRouter.of(context).pushNamed(DashboardScreen.id);
+                          GoRouter.of(context).goNamed("/");
                         },
                       ),
               ),

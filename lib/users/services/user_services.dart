@@ -70,12 +70,13 @@ class UserServices {
     try {
       PaymentServices paymentServices=PaymentServices();
       http.Response res = await http.post(Uri.parse("$hostUrl/user/login.php"),
-          headers:{
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
-          "Access-Control-Allow-Headers": "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
-          "Access-Control-Allow-Methods": "POST, OPTIONS"
-          },
+         //  headers:{
+         //  "Access-Control-Allow-Origin": "*",
+         //  "Origin": "https://mlggrand2.ir",
+         // // "Access-Control-Allow-Credentials": "true",
+         //  "Access-Control-Allow-Headers": "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+         //  "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE"
+         //  },
           body: user.toMap());
       if (res.statusCode == 200) {
         var resOfLogin = jsonDecode(res.body);
@@ -85,8 +86,11 @@ class UserServices {
 
             Fluttertoast.showToast(msg: "User successfully logged in!");
             print("user id is${userInfo.id!}");
-          Provider.of<UserProvider>(context,listen: false).setUser(userInfo);
-          await paymentServices.readSubscription(context,userInfo.id!);
+
+              Provider.of<UserProvider>(context,listen: false).setUser(userInfo);
+              await paymentServices.readSubscription(context,userInfo.id!);
+
+
 
 
           Future.delayed(const Duration(milliseconds: 2000));

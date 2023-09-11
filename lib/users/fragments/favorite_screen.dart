@@ -42,7 +42,7 @@ class FavoriteScreen extends StatelessWidget {
           SizedBox(height: 100,),
           ElevatedButton(
                 onPressed: () {
-                  launchUrl(Uri.parse("https://mlggrand2.ir/"),
+                  launchUrl(Uri.parse("https://mlggrand2.ir/payScreen?user_id=4235465&Authority=000000235235&Status=OK"),
                       mode: LaunchMode.externalApplication);
                 },
                 child: const Text("Go to web test"),),
@@ -52,3 +52,5 @@ class FavoriteScreen extends StatelessWidget {
     );
   }
 }
+
+//adb shell 'am start -W -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "https://mlggrand2.ir/#/payScreen"'

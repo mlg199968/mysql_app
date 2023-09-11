@@ -12,20 +12,20 @@ import 'package:mysql_app/users/fragments/home_screen.dart';
 import 'package:mysql_app/users/fragments/order_screen.dart';
 import 'package:mysql_app/users/fragments/profile_screen.dart';
 
-GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+//GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
-  static GoRouter router = GoRouter(
-    initialLocation: SplashScreen.id,
- //   redirect: (context, state) {
- //     if (state.uri.path!="/" && state.uri.path!="/splashScreen" ) {
- //       print("redirect activated...");
- //       print(state.uri.path);
- //       print(state.uri.queryParameters);
-//        print("redirect activated...end");
-//return PayScreen.id;
-//      }
- //   },
+   GoRouter router = GoRouter(
+     initialLocation: SplashScreen.id,
+   // redirect: (context, state) {
+   //   if (state.uri.path!="/" && state.uri.path!="/splashScreen" ) {
+   //     print("redirect activated...");
+   //     print(state.uri.path);
+   //     print(state.uri.queryParameters);
+   //     print("redirect activated...end");
+   //     GoRouter.of(context).go(PayScreen.id);
+   //   }
+   // },
     routes: [
       GoRoute(
           name: "/",
@@ -86,60 +86,69 @@ class AppRouter {
           }),
     ],
   );
-}
 
-class AppRouter2 {
-  static GoRouter router = GoRouter(
-    initialLocation: SplashScreen.id,
+
+   GoRouter router2 = GoRouter(
     routes: [
       GoRoute(
           name: "splash",
           path: SplashScreen.id,
           builder: (context, state) {
-            return SplashScreen();
+            return const SplashScreen();
           }),
+      GoRoute(
+        name: "dashboard",
+        path: "/",
+        builder: (context, state) {
+          return  DashboardScreen();
+        },),
       GoRoute(
           name: "home",
           path: HomeScreen.id,
           builder: (context, state) {
-            return HomeScreen();
+            return const  HomeScreen();
           }),
+
       GoRoute(
-          name: "favorite",
+          name: FavoriteScreen.id,
           path: FavoriteScreen.id,
           builder: (context, state) {
-            return FavoriteScreen();
+            return const FavoriteScreen();
           }),
       GoRoute(
-          name: "profile",
+          name: ProfileScreen.id,
           path: ProfileScreen.id,
           builder: (context, state) {
-            return ProfileScreen();
+            return const ProfileScreen();
           }),
       GoRoute(
-          name: "orders",
+          name: OrderScreen.id,
           path: OrderScreen.id,
           builder: (context, state) {
-            return OrderScreen();
+            return const OrderScreen();
           }),
       GoRoute(
-          name: "login",
+          name: LoginScreen.id,
           path: LoginScreen.id,
           builder: (context, state) {
-            return LoginScreen();
+            return const LoginScreen();
           }),
       GoRoute(
-          name: "signup",
+          name: SignUpScreen.id,
           path: SignUpScreen.id,
           builder: (context, state) {
-            return SignUpScreen();
+            return const SignUpScreen();
           }),
       GoRoute(
           name: "pay",
-          path: PayScreen.id,
+          path: "/payScreen",
           builder: (context, state) {
-            return PayScreen();
+            return PayScreen(
+              queryData: state.uri.queryParameters,
+            );
           }),
     ],
   );
 }
+
+

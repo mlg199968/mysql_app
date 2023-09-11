@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mysql_app/deep_link_handler.dart';
 import 'package:mysql_app/providers/user_provider.dart';
 import 'package:mysql_app/users/authentication/login_screen.dart';
 import 'package:mysql_app/users/fragments/favorite_screen.dart';
@@ -48,6 +49,7 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Consumer<UserProvider>(
 
         builder: (context,userProvider,child) {

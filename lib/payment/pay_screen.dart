@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mysql_app/components/custom_button.dart';
 import 'package:mysql_app/consts/utilties.dart';
 import 'package:mysql_app/models/subscription.dart';
 import 'package:mysql_app/payment/payment_services.dart';
+import 'package:mysql_app/users/fragments/profile_screen.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zarinpal/zarinpal.dart';
@@ -40,9 +42,12 @@ class _PayScreenState extends State<PayScreen> {
         String id = widget.queryData!['user_id'];
         String status = widget.queryData!['Status'];
         String authority = widget.queryData!['Authority'];
+print(authority);
 
         ZarinPal().verificationPayment(status, authority, paymentRequest,
                 (isPaymentSuccess, refID, paymentRequest) {
+                  print("after payment");
+                  print(isPaymentSuccess);
               if (isPaymentSuccess) {
                 //
                 Subscription subscription = Subscription(
@@ -133,6 +138,13 @@ class _PayScreenState extends State<PayScreen> {
                 onPressed: () {
                   launchUrl(Uri.parse("https://mlggrand2.ir/#/"),
                       mode: LaunchMode.externalNonBrowserApplication);
+                },
+              ),
+            CustomButton(
+                color: Colors.orange,
+                text: "go to profile Screen",
+                onPressed: () {
+               context.goNamed(ProfileScreen.id);
                 },
               ),
             ],

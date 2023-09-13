@@ -8,6 +8,7 @@ import 'package:mysql_app/consts/constants.dart';
 import 'package:mysql_app/consts/utilties.dart';
 import 'package:mysql_app/models/subscription.dart';
 import 'package:mysql_app/models/user.dart';
+import 'package:mysql_app/payment/pay_screen.dart';
 import 'package:mysql_app/payment/payment_services.dart';
 import 'package:mysql_app/providers/user_provider.dart';
 import 'package:mysql_app/users/authentication/login_screen.dart';
@@ -28,7 +29,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   PaymentRequest paymentRequest = PaymentRequest();
   PaymentServices paymentServices = PaymentServices();
-
+  String? payReference;
 
   payOptions(PaymentRequest paymentRequest) {
     int id=Provider.of<UserProvider>(context,listen: false).user!.id!;
@@ -37,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ..setAmount(1000)
       ..setDescription("description")
       ..setMerchantID("332f20e0-3333-41ce-b15d-aff7476a92ba")
-      ..setCallbackURL("https://mlggrand2.ir/#/payScreen?user_id=$id");
+      ..setCallbackURL("https://mlggrand2.ir/profileScreen?user_id=$id");
 
     ZarinPal().startPayment(paymentRequest, (status, paymentGatewayUri) {
       try {
@@ -56,46 +57,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  // subscriptionPayment(context,User? user,PaymentRequest paymentRequest,PaymentServices paymentServices) async {
-  //   String deviceId=await getDeviceInfo();
-  //   StreamSubscription subscription = linkStream.listen((link) {
-  //     if (link != null) {
-  //       if (link.toLowerCase().contains('status')) {
-  //         String status = link.split("=").last.toString();
-  //         String authority =
-  //             link.split("&")[0].split("?")[1].split("=")[1].toString();
-  //
-  //         ZarinPal().verificationPayment(status, authority, paymentRequest,
-  //             (isPaymentSuccess, refID, paymentRequest) {
-  //           if (isPaymentSuccess) {
-  //             Subscription subscription = Subscription(
-  //               id: user!.id!.toInt(),
-  //               user: user,
-  //               level: 1,
-  //               startDate: DateTime.now(),
-  //               description: paymentRequest.description ?? "",
-  //               payAmount: paymentRequest.amount!.toDouble(),
-  //               refId: refID!,
-  //               phoneNumber: user.phoneNumber!,
-  //               email: user.email,
-  //               deviceId:deviceId,
-  //             );
-  //             Provider.of<UserProvider>(context,listen: false).setSubscription(subscription);
-  //             paymentServices.saveSubscription(subscription);
-  //             Provider.of<UserProvider>(context, listen: false).levelUpUser();
-  //             setState(() {});
-  //           }
-  //         });
-  //       }
-  //     }
-  //   });
-  // }
-testDeepLink() {
-}
+  subscriptionPayment(context,User? user,PaymentRequest paymentRequest,PaymentServices paymentServices) async {
+    String deviceId=await getDeviceInfo();
+    if (widget.queryData!['Status'] == "OK") {
+      String id = widget.queryData!['user_id'];
+      String status = widget.queryData!['Status'];
+      String authority = widget.queryData!['Authority'];
+
+
+          ZarinPal().verificationPayment(status, authority, paymentRequest,
+              (isPaymentSuccess, refID, paymentRequest) {
+            if (isPaymentSuccess) {
+              Subscription subscription = Subscription(
+                id: user!.id!.toInt(),
+                user: user,
+                level: 1,
+                startDate: DateTime.now(),
+                description: paymentRequest.description ?? "",
+                payAmount: paymentRequest.amount!.toDouble(),
+                refId: refID!,
+                phoneNumber: user.phoneNumber!,
+                email: user.email,
+                deviceId:deviceId,
+              );
+              Provider.of<UserProvider>(context,listen: false).setSubscription(subscription);
+              paymentServices.saveSubscription(subscription);
+              Provider.of<UserProvider>(context, listen: false).levelUpUser();
+              setState(() {});
+            }
+          });
+        }
+  }
   @override
   void initState() {
     User? user=Provider.of<UserProvider>(context, listen: false).user;
-    //subscriptionPayment(context,user,paymentRequest,paymentServices);
+    subscriptionPayment(context,user,paymentRequest,paymentServices);
     super.initState();
   }
 
@@ -127,6 +123,7 @@ testDeepLink() {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white54,
       body: Consumer<UserProvider>(builder: (context, userProvider, child) {
@@ -156,6 +153,32 @@ testDeepLink() {
           )
               :ListView(
             children: [
+              Container(
+                width: double.maxFinite,
+                color: Colors.white,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Pay Detail",style: TextStyle(fontSize: 25),),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    TextRow(
+                        label: "Amount",
+                        text: paymentRequest.amount.toString() ),
+                    TextRow(
+                        label: "Authority",
+                        text: paymentRequest.authority.toString()),
+                    TextRow(
+                        label: "Pay reference",
+                        text: payReference ?? " no pay reference"),
+                    TextRow(
+                        label: "Query Data",
+                        text: widget.queryData.toString()),
+                  ],
+                ),
+              ),
               userInfoItemProfile(Icons.person, userProvider.user!.name),
               const SizedBox(
                 height: 20,

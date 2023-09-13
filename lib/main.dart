@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:mysql_app/deep_link_handler.dart';
 import 'package:mysql_app/providers/user_provider.dart';
+import 'package:mysql_app/providers/utility_provider.dart';
 import 'package:mysql_app/router.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context)=>UserProvider()),
+        ChangeNotifierProvider<UserProvider>(create: (context)=>UserProvider()),
+        ChangeNotifierProvider<UtilityProvider>(create: (context)=>UtilityProvider()),
       ],
       child: MaterialApp.router(
           title: 'mysql app',

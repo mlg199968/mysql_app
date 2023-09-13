@@ -31,117 +31,119 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: const Text("Sign Up Screen"),
       ),
       body: LayoutBuilder(builder: (context, constraint) {
-        return ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 450,
-            minWidth: 300,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: formKey,
-              child: SingleChildScrollView(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.person_outlined,
-                        color: Colors.blueAccent,
-                        size: 150,
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      CustomTextField(
-                        label: "Name",
-                        controller: nameController,
-                        prefixIcon: Icons.person,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomTextField(
-                        label: "Email",
-                        controller: emailController,
-                        prefixIcon: Icons.email,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Obx(
-                        () => CustomTextField(
-                          label: "Password",
-                          obscure: isObscure.value,
-                          controller: passwordController,
-                          prefixIcon: Icons.vpn_key,
-                          suffixIcon: Obx(() => GestureDetector(
-                                child: Icon(isObscure.value
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                                onTap: () {
-                                  isObscure.value = !isObscure.value;
-                                },
-                              )),
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 450,
+              minWidth: 300,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.person_outlined,
+                          color: Colors.blueAccent,
+                          size: 150,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      CustomButton(
-                        text: "Sign up",
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            User user = User(
-                              name: nameController.text,
-                              email: emailController.text,
-                              pass: passwordController.text,
-                              phoneNumber: "",
-                              level: 0,
-                            );
-                            UserServices.registerUser(user,context);
-                          }
-                        },
-                        width: constraint.maxWidth,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Already have account?"),
-                          GestureDetector(
-                              onTap: () {
-                                GoRouter.of(context).pushReplacementNamed(LoginScreen.id);
-                              },
-                              child: const Text(
-                                "Sign in",
-                                style: TextStyle(color: Colors.blue),
-                              )),
-                        ],
-                      ),
-                      const Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Are you a Admin?"),
-                          GestureDetector(
-                              onTap: () {},
-                              child: const Text(
-                                "Admin panel",
-                                style: TextStyle(color: Colors.blue),
-                              )),
-                        ],
-                      ),
-                    ],
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        CustomTextField(
+                          label: "Name",
+                          controller: nameController,
+                          prefixIcon: Icons.person,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomTextField(
+                          label: "Email",
+                          controller: emailController,
+                          prefixIcon: Icons.email,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Obx(
+                          () => CustomTextField(
+                            label: "Password",
+                            obscure: isObscure.value,
+                            controller: passwordController,
+                            prefixIcon: Icons.vpn_key,
+                            suffixIcon: Obx(() => GestureDetector(
+                                  child: Icon(isObscure.value
+                                      ? Icons.visibility_off
+                                      : Icons.visibility),
+                                  onTap: () {
+                                    isObscure.value = !isObscure.value;
+                                  },
+                                )),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        CustomButton(
+                          text: "Sign up",
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              User user = User(
+                                name: nameController.text,
+                                email: emailController.text,
+                                pass: passwordController.text,
+                                phoneNumber: "",
+                                level: 0,
+                              );
+                              UserServices.registerUser(user,context);
+                            }
+                          },
+                          width: constraint.maxWidth,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Already have account?"),
+                            GestureDetector(
+                                onTap: () {
+                                  GoRouter.of(context).pushReplacementNamed(LoginScreen.id);
+                                },
+                                child: const Text(
+                                  "Sign in",
+                                  style: TextStyle(color: Colors.blue),
+                                )),
+                          ],
+                        ),
+                        const Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Are you a Admin?"),
+                            GestureDetector(
+                                onTap: () {},
+                                child: const Text(
+                                  "Admin panel",
+                                  style: TextStyle(color: Colors.blue),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

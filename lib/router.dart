@@ -55,7 +55,7 @@ class AppRouter {
           name: ProfileScreen.id,
           path: ProfileScreen.id,
           pageBuilder: (context, state) {
-            return const MaterialPage(child: ProfileScreen());
+            return  MaterialPage(child: ProfileScreen(queryData: state.uri.queryParameters,));
           }),
       GoRoute(
           name: OrderScreen.id,

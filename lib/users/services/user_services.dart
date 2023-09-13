@@ -90,9 +90,6 @@ class UserServices {
               Provider.of<UserProvider>(context,listen: false).setUser(userInfo);
               await paymentServices.readSubscription(context,userInfo.id!);
 
-
-
-
           Future.delayed(const Duration(milliseconds: 2000));
           if (context.mounted) {
             Navigator.pop(context,false);

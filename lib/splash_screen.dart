@@ -19,12 +19,19 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+print("initState");
+
+  }
+  @override
+  void didChangeDependencies() {
+    print("didChangeDependencies");
     Provider.of<UserProvider>(context, listen: false).getUser();
     Provider.of<UserProvider>(context, listen: false).getSubscription();
     Future.delayed(const Duration(milliseconds: 2000), () {
-      //GoRouter.of(context).pushReplacementNamed(DashboardScreen.id);
-      context.pushReplacementNamed("/");
+      GoRouter.of(context).pushReplacementNamed("/");
+      //context.pushReplacementNamed("/");
     });
+    super.didChangeDependencies();
   }
 
   @override
